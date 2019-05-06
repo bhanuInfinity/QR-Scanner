@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="30dp">
+
+        <TextView
+            android:id="@+id/text_licence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Licence $ CPE Manager"
+            android:textColor="@color/color_FFC107"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <RelativeLayout
+            android:id="@+id/cpe_layoout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_licence"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/cpe_subcription_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CPE Activation key"
+                android:background="@color/color_FFC107"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/cpe_subcription_price"
+                android:layout_centerVertical="true">
+
+
+                <TextView
+                    android:id="@+id/activation_key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXXXXXXXXXXXXX"
+                    android:textSize="13sp"
+
+                    />
+            </RelativeLayout>
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/choose_and_selected_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose your Plan"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/cpe_layoout"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
+
+
+        <RelativeLayout
+            android:id="@+id/layout_100"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choose_and_selected_text"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/subcription_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 100"
+                android:background="@color/color_FFC107"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/subcription_price"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/subcription_plan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 Month + 20mbps"
+                    android:textSize="15sp"
+                    android:textColor="@color/btn_color"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ethernet + WIFI"
+                    android:textSize="13sp"
+                    android:layout_below="@+id/subcription_plan"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_200"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_100"
+            android:layout_marginTop="10dp"
+
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/subcription_price_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 200"
+                android:background="@color/color_FFC107"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/subcription_price_200"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/subcription_plan_200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 Month + 20mbps"
+                    android:textSize="15sp"
+                    android:textColor="@color/btn_color"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ethernet + WIFI"
+                    android:textSize="13sp"
+                    android:layout_below="@+id/subcription_plan_200"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_250"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_200"
+            android:layout_marginTop="10dp"
+
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/subcription_price_250"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 250"
+                android:background="@color/color_FFC107"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/subcription_price_250"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/subcription_plan_250"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4 Month + 20mbps"
+                    android:textSize="15sp"
+                    android:textColor="@color/btn_color"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ethernet + WIFI"
+                    android:textSize="13sp"
+                    android:layout_below="@+id/subcription_plan_250"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/activate_cpe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btn_color"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textStyle="bold"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="Scan CPE"/>
+</RelativeLayout>
