@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SD WAN</string>
+    <string name="title_activity_scanner">ScannerActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

@@ -10,7 +10,7 @@
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@mipmap/Logo_small" />
+        android:src="@mipmap/logo_small" />
 
 
     <RelativeLayout
