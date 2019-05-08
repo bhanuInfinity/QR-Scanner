@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.sdwan.activitis.Dashboard;
 import com.example.sdwan.utils.Utils;
 
 import com.example.sdwan.Ui.Activity.ScannerActivity;
@@ -36,10 +37,10 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
 
         if (user_name.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0) {
-            startActivity(new Intent(this, ScannerActivity.class));
+
 
             if (Utils.INTANCE.ValidateLogin(user_name.getText().toString().trim(), password.getText().toString().trim())) {
-
+                startActivity(new Intent(this, Dashboard.class));
             } else {
                 Toast.makeText(this, "Please enter correct login detail", Toast.LENGTH_SHORT).show();
             }

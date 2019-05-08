@@ -54,8 +54,8 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
                     //converting the data to json
                     JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
-                    textViewName.setText(obj.getString("name"));
-                    textViewAddress.setText(obj.getString("address"));
+                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //if control comes here

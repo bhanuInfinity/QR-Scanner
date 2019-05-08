@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sdwan">
-
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".Ui.Activity.AnyActivity"
             android:screenOrientation="fullSensor"
@@ -28,6 +28,13 @@
         </activity>
         <activity
             android:name=".Ui.Activity.ScannerActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activitis.Dashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activitis.ActivationScreen"
             android:screenOrientation="portrait" />
     </application>
 
