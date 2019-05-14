@@ -114,6 +114,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/et_100"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ethernet + WIFI"
@@ -161,6 +162,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/et_200"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ethernet + WIFI"
@@ -208,6 +210,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/et_250"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ethernet + WIFI"
@@ -233,5 +236,5 @@
         android:layout_marginLeft="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
-        android:text="Scan CPE"/>
+        android:text="Activate"/>
 </RelativeLayout>

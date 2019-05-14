@@ -1,5 +1,6 @@
 package com.example.sdwan.activitis;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,9 +17,6 @@ import com.example.sdwan.model.CpeResponse;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +28,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     TextView subcription_price_250;
     TextView scan_cpe;
     private IntentIntegrator qrScan;
+    ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +47,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         qrScan = new IntentIntegrator(this);
         qrScan.setCaptureActivity(AnyActivity.class);
         qrScan.setOrientationLocked(false);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait..");
     }
 
     @Override
     public void onClick(View v) {
         if (v == scan_cpe) {
             qrScan.initiateScan();
+            //CallApi("123334444");
         }
     }
 
@@ -60,23 +64,19 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            //if qrcode has nothing in it
             if (result.getContents() == null) {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
-                //if qr contains data
-                //converting the data to json
-                //setting values to textviews
                 CallApi(result.getContents().toString());
-
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void CallApi(final String val) {
+    private void CallApi (String val) {
+       final String key = val;
+       showProgressDialog();
         Call<CpeResponse> callapi = NetworkCall.hitNetwork().getCpeData(val);
         callapi.enqueue(new Callback<CpeResponse>() {
             @Override
@@ -85,25 +85,45 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     CpeResponse res = response.body();
                     if (res.getResponseCode() != null && res.getResponseCode().equalsIgnoreCase("ERR02")) {
                         Log.e("ERR02", "not exist");
-                        Intent i = new Intent(Dashboard.this, ActivationScreen.class);
-                        i.putExtra("val", val.toString());
-                        i.putExtra("response", res);
-                        i.putExtra("isExist", false);
-                        startActivity(i);
+                        OpenActivity(res,key,"false");
                     } else {
-                        Intent i = new Intent(Dashboard.this, ActivationScreen.class);
-                        i.putExtra("val", val);
-                        i.putExtra("response", res);
-                        i.putExtra("isExist", false);
-                        startActivity(i);
+                        OpenActivity(res,key,"true");
                     }
                 }
+
+                hideProgressDialog();
+
             }
 
             @Override
             public void onFailure(Call<CpeResponse> call, Throwable t) {
+                hideProgressDialog();
                 Log.e("error", "error");
             }
         });
+
     }
+    private void showProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.show();
+        }
+    }
+
+    private void hideProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    public void OpenActivity(CpeResponse cpeResponse,String key,String isExist){
+        Intent i = new Intent(Dashboard.this, ActivationScreen.class);
+        Bundle bundle =new Bundle();
+        bundle.putString("ur_value",String.valueOf(key));
+        bundle.putString("isExist", isExist);
+        bundle.putSerializable("my_response", cpeResponse);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+
 }

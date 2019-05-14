@@ -7,5 +7,7 @@
     <color name="btn_color">#5978EB</color>
     <color name="white">#FFFFFF</color>
     <color name="signup_color">#A6B5EB</color>
-    <color name="color_FFC107">#FFC107</color>
+    <color name="color_FFC107">#e9b126</color>
+    <color name="color_black">#000000</color>
+    <color name="windowow_Bg">#ebe5e5</color>
 </resources>

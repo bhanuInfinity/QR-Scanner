@@ -30,7 +30,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:text="infinity1" />
 
         <EditText
             android:id="@+id/password"
@@ -45,7 +45,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:inputType="textPassword"
-            android:text="Name" />
+            android:text="infinity1234" />
 
 
         <Button
