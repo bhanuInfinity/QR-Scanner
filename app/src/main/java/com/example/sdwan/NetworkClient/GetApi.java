@@ -4,6 +4,8 @@ import android.support.annotation.MainThread;
 
 import com.example.sdwan.model.CpeActivationRequest;
 import com.example.sdwan.model.CpeResponse;
+import com.example.sdwan.model.Login.LoginRequest;
+import com.example.sdwan.model.Login.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,4 +24,7 @@ public interface GetApi {
 
     @PUT("/clients")
     Call<CpeResponse> updateActivation(@Body CpeActivationRequest cpeActivationRequest);
+
+    @POST("/clients/loginUser")
+    Call<LoginResponse> Login(@Body LoginRequest loginRequest);
 }

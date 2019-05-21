@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sdwan">
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -18,13 +21,19 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
-            android:name=".LoginScreen"
+            android:name=".activitis.SplaceScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginScreen"
+            android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".Ui.Activity.ScannerActivity"
@@ -36,6 +45,12 @@
         <activity
             android:name=".activitis.ActivationScreen"
             android:screenOrientation="portrait" />
+        <service
+            android:name=".service.LocationUpdatesService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
+
 
 </manifest>

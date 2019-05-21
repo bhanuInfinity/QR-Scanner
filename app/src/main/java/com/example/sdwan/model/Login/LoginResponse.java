@@ -1,16 +1,13 @@
-package com.example.sdwan.model;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.example.sdwan.model.Login;
 
 import java.io.Serializable;
 
-public class CpeResponse implements Serializable {
+public class LoginResponse implements Serializable {
 
     private String result;
     private String message;
     private String responseCode;
-    private CpeResponseBody responseBody;
+    private LoginResponseBody responseBody;
 
     public String getResult() {
         return result;
@@ -36,11 +33,13 @@ public class CpeResponse implements Serializable {
         this.responseCode = responseCode;
     }
 
-    public CpeResponseBody getResponseBody() {
+    public LoginResponseBody getResponseBody() {
         return responseBody;
     }
 
-    public void setResponseBody(CpeResponseBody responseBody) {
+    public void setResponseBody(LoginResponseBody responseBody) {
         this.responseBody = responseBody;
     }
+
+
 }
