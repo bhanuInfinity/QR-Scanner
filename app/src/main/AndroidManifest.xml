@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.sdwan">
+    package="com.infinitylabs.udwan">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -13,15 +13,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Ui.Activity.AnyActivity"
+            android:name="com.infinitylabs.udwan.Ui.Activity.AnyActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
-            android:name=".activitis.SplaceScreen"
+            android:name="com.infinitylabs.udwan.activitis.SplaceScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,24 +32,25 @@
         </activity>
 
         <activity
-            android:name=".LoginScreen"
+            android:name="com.infinitylabs.udwan.LoginScreen"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
-            android:name=".Ui.Activity.ScannerActivity"
+            android:name="com.infinitylabs.udwan.Ui.Activity.ScannerActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activitis.Dashboard"
+            android:name="com.infinitylabs.udwan.activitis.Dashboard"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitis.ActivationScreen"
+            android:name="com.infinitylabs.udwan.activitis.ActivationScreen"
             android:screenOrientation="portrait" />
         <service
-            android:name=".service.LocationUpdatesService"
+            android:name="com.infinitylabs.udwan.service.LocationUpdatesService"
             android:enabled="true"
             android:exported="false" />
+
 
     </application>
 

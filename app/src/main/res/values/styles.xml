@@ -11,6 +11,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="actionMenuTextColor">@color/color_black</item>
         <item name="android:windowBackground">@color/windowow_Bg</item>
     </style>
 
