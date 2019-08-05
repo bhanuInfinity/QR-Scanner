@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardElevation="5dp"
+        card_view:cardCornerRadius="5dp"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -18,20 +19,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_avail_licence"
-
             android:background="@color/white">
-
+            <ImageView
+                android:id="@+id/current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_star"/>
             <TextView
                 android:id="@+id/cpe_subcription_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$ 100"
-                android:background="@color/color_FFC107"
-                android:textColor="@color/white"
+                android:textColor="@color/btn_color"
                 android:textStyle="bold"
                 android:layout_margin="10dp"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
+                android:textSize="@dimen/text_26"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"/>
 

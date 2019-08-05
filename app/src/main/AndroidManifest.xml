@@ -4,6 +4,7 @@
     package="com.infinitylabs.udwan">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -46,6 +47,9 @@
         <activity
             android:name="com.infinitylabs.udwan.activitis.ActivationScreen"
             android:screenOrientation="portrait" />
+        <activity android:name=".activitis.LicenseListScreen"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name="com.infinitylabs.udwan.service.LocationUpdatesService"
             android:enabled="true"

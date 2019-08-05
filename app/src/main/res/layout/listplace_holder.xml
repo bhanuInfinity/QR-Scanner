@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:shimmer="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -13,32 +11,28 @@
         card_view:cardElevation="5dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardUseCompatPadding="true">
-
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            shimmer:duration="100">
         <RelativeLayout
             android:id="@+id/layout_100"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_avail_licence"
-            android:background="@drawable/cpe_list_selector"
-            >
-            <ImageView
-                android:id="@+id/current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="5dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_star"/>
-            <TextView
+            android:padding="10dp"
+            android:background="@color/white">
+
+            <View
                 android:id="@+id/cpe_subcription_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$ 100"
-                android:background="@color/white"
-                android:textColor="@color/btn_color"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:background="@drawable/fantasy_placeholder_gradient_bg"
                 android:textStyle="bold"
                 android:layout_margin="10dp"
-                android:textSize="@dimen/text_26"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
                 android:paddingLeft="20dp"
@@ -50,26 +44,28 @@
                 android:layout_toRightOf="@+id/cpe_subcription_price"
                 android:layout_centerVertical="true">
 
-                <TextView
+                <View
                     android:id="@+id/cpe_subcription_plan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 Month + 20mbps"
-                    android:textSize="15sp"
-                    android:textColor="@color/btn_color"
-                    android:textStyle="bold"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/fantasy_placeholder_gradient_bg"
+                   />
 
                 <TextView
                     android:id="@+id/_cpetype"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ethernet + WIFI"
-                    android:textSize="13sp"
-                    android:textColor="@color/btn_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_below="@+id/cpe_subcription_plan"
+                    android:background="@drawable/fantasy_placeholder_gradient_bg"
                     />
             </RelativeLayout>
         </RelativeLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>
+

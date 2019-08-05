@@ -1,12 +1,19 @@
 package com.infinitylabs.udwan.utils;
 
+
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.infinitylabs.udwan.R;
 import com.infinitylabs.udwan.model.Login.LoginRequest;
@@ -70,13 +77,12 @@ public enum Utils {
                 DateFormat.getDateTimeInstance().format(new Date()));
     }
 
-    public static void SaveCredential(Context context, String username, String password, boolean islogin,String token) {
+    public static void SaveCredential(Context context, String username, String password, boolean islogin,String token,String name) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.USER_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constant.USERNAME, username);
-        editor.putString(Constant.PASSWORD, password);
         editor.putBoolean(Constant.IS_LOGGED, islogin);
         editor.putString(Constant.CUST_TOKEN, token);
+        editor.putString(Constant.USERNAME,name);
         editor.commit();
     }
 
@@ -132,11 +138,25 @@ public enum Utils {
         return sharedPreferences.getString(Constant.CUST_TOKEN,"");
     }
 
+    public static String getUserName(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.USER_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(Constant.USERNAME,"");
+    }
     public static void Logout(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.USER_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
+    }
+
+    public static  boolean checkInternetConnection(Context context) {
+        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService (Context.CONNECTIVITY_SERVICE);
+        if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() &&    conMgr.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            //  System.out.println("Internet Connection Not Present");
+            return false;
+        }
     }
 
     public static Map<String ,String> getHeaderMap(Context context){
@@ -145,4 +165,22 @@ public enum Utils {
      return map;
     }
 
+    public  static void term_And_Condition(Context context){
+        final Dialog dialog = new Dialog(context,R.style.Dialog);
+        dialog.setContentView(R.layout.term_and_condition_dialog);
+        dialog.setTitle("Term & Conditions");
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText(Html.fromHtml(context.getResources().getString(R.string.terms)));
+
+        TextView dialogButton = (TextView) dialog.findViewById(R.id.dialogButtonOK);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
 }

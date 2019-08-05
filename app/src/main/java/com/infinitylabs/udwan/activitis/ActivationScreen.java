@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
@@ -27,8 +26,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +44,12 @@ import com.infinitylabs.udwan.listner.RecyclerTouchListener;
 import com.infinitylabs.udwan.model.CpeActivationRequest;
 import com.infinitylabs.udwan.model.CpeResponse;
 
+import com.infinitylabs.udwan.model.dashboard.LicenseResponse;
 import com.infinitylabs.udwan.model.dashboard.PlanData;
 import com.infinitylabs.udwan.service.LocationUpdatesService;
 import com.infinitylabs.udwan.utils.Utils;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -65,24 +66,7 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
     CpeResponse response;
     ArrayList<PlanData> planList;
 
-    RelativeLayout layout_100;
-    TextView subcription_plan;
-    TextView et_100;
-    TextView subcription_price;
 
-    RelativeLayout layout_200;
-    TextView subcription_plan_200;
-    TextView et_200;
-    TextView subcription_price_200;
-
-    RelativeLayout layout_250;
-    TextView subcription_plan_250;
-    TextView et_250;
-    TextView subcription_price_250;
-
-    boolean is100Selected = false;
-    boolean is200Selected = false;
-    boolean is250selected = false;
     String selectedPlan = "";
     ProgressDialog progressDialog;
     boolean isUpdate = false;
@@ -96,9 +80,13 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
     private boolean mBound = false;
     private CpePlanAdaptor mAdapter;
     private int lastPosition =-1;
+
     private String lid="";
     Call<CpeResponse> callapi;
     Geocoder geocoder;
+    LinearLayout error_layout;
+    RelativeLayout main_layout;
+    ImageView back;
 
 
     @Override
@@ -119,12 +107,24 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
             serialNumber = bundle.getString("ur_value");
             isExist = bundle.getString("isExist");
             lid =  getIntent().getStringExtra("lid");
-            planList = (ArrayList<PlanData>) getIntent().getSerializableExtra("planlist");
+           // planList = (ArrayList<PlanData>) getIntent().getSerializableExtra("planlist");
         }
         init();
+        if (Utils.checkInternetConnection(this)) {
+            loadingShimmerPlanData();
+            CallApiforLicenses();
+        } else {
+            showInternetError();
+        }
     }
 
     private void init() {
+
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        toolbar.setTitle("Choose license");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         geocoder = new Geocoder(this, Locale.getDefault());
         recyclerView = findViewById(R.id.recyclerview);
         progressDialog = new ProgressDialog(this);
@@ -134,38 +134,28 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
         activate_cpe = findViewById(R.id.activate_cpe);
         activate_cpe.setOnClickListener(this);
         activation_key.setText(serialNumber);
+        main_layout = findViewById(R.id.main_layout);
+        error_layout = findViewById(R.id.error);
 
-        mAdapter = new CpePlanAdaptor(this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
 
-        if(isExist.equalsIgnoreCase("true")){
-            activate_cpe.setText("Change Plan");
-            for (int i= 0;i<planList.size();i++){
-                if(planList.get(i).getLid().equalsIgnoreCase(lid)){
-                    planList.get(i).setSelected(true);
-                    lastPosition = i;
-                }
-            }
-        }else{
-            isUpdate=true;
-        }
-        mAdapter.setValue(planList);
+
+
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 recyclerView, new CpePlanAdaptor.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                if(isUpdate) {
+
                     if (lastPosition >= 0) {
                         planList.get(lastPosition).setSelected(false);
                     }
+
                     planList.get(position).setSelected(true);
                     mAdapter.setValue(planList);
+
                     lastPosition = position;
-                }
+
+                    display();
             }
 
             @Override
@@ -174,8 +164,94 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
                         Toast.LENGTH_LONG).show();
             }
         }));
+
     }
 
+    private void CallApiforLicenses() {
+        Call<LicenseResponse> callapi = NetworkCall.hitNetwork(this).getAllLicenses(Utils.getHeaderMap(this));
+        callapi.enqueue(new Callback<LicenseResponse>() {
+            @Override
+            public void onResponse(Call<LicenseResponse> call, Response<LicenseResponse> response) {
+                if (response.code() == 200) {
+                    LicenseResponse res = response.body();
+
+                    if (res.getData() != null && res.getData().size() > 0) {
+                        Log.e("ERR02", "not exist");
+                        setAdaptor(res);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No License attached ", Toast.LENGTH_SHORT).show();
+                    }
+                    hideInternetError();
+                } else if (response.code() == 403) {
+                    Utils.INTANCE.Logout(getApplicationContext());
+                    Intent newIntent = new Intent(ActivationScreen.this, LoginScreen.class);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(newIntent);
+                }else {
+                    showInternetError();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<LicenseResponse> call, Throwable t) {
+                showInternetError();
+                Log.e("error", "error");
+            }
+        });
+
+    }
+    private  void setAdaptor(LicenseResponse licenseResponse){
+        Log.e("setAdaptor","setAdaptor");
+        planList = licenseResponse.getData();
+        if(isExist.equalsIgnoreCase("true")){
+           // activate_cpe.setText("Change Plan");
+            for (int i= 0;i<planList.size();i++){
+                if(planList.get(i).getLid().equalsIgnoreCase(lid)){
+                    planList.get(i).setSelected(true);
+                    planList.get(i).setFromServer(true);
+                    lastPosition = i;
+                }
+            }
+            isUpdate=true;
+        }
+        display();
+        mAdapter.setValue(planList);
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    public void showInternetError() {
+        if (error_layout != null) {
+            recyclerView.setVisibility(View.GONE);
+            error_layout.setVisibility(View.VISIBLE);
+            main_layout.setVisibility(View.GONE);
+            activate_cpe.setVisibility(View.GONE);
+        }
+    }
+
+    public void hideInternetError() {
+        if (error_layout != null) {
+            recyclerView.setVisibility(View.VISIBLE);
+            error_layout.setVisibility(View.GONE);
+            main_layout.setVisibility(View.VISIBLE);
+            activate_cpe.setVisibility(View.VISIBLE);
+        }
+
+    }
+    private void loadingShimmerPlanData() {
+        planList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            planList.add(new PlanData(0, "",0,"",0,"",false,null,"",2,false));
+        }
+        mAdapter = new CpePlanAdaptor(ActivationScreen.this,planList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+    }
     private boolean checkPermission() {
         return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
     }
@@ -290,6 +366,10 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+
+        if(v == back){
+            finish();
+        }
         if (v == activate_cpe) {
             if (activate_cpe.getText().toString().equalsIgnoreCase("change Plan")) {
                 choose_and_selected_text.setText("Please choose you plan");
@@ -297,7 +377,28 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
                 activate_cpe.setText("Activate");
             } else {
                 if (isUpdate) {
-                    CallApi(selectedPlan);
+                    if(!lid.equalsIgnoreCase(planList.get(lastPosition).getLid())){
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                        alertDialogBuilder.setMessage("Are you sure you wanted to change license");
+                                alertDialogBuilder.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                CallApi(selectedPlan);
+                                            }
+                                        });
+
+                        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+
                 } else {
                     if (lastPosition>=0) {
                         CallApi(selectedPlan);
@@ -389,13 +490,6 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
     };
 
 
-    private  void setAdaptor(com.infinitylabs.udwan.model.dashboard.Response response){
-        mAdapter = new CpePlanAdaptor(this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-    }
 
     private void ShowDialog(String msg){
         AlertDialog.Builder alertDialog =new AlertDialog.Builder(this);
@@ -410,5 +504,20 @@ public class ActivationScreen extends AppCompatActivity implements View.OnClickL
         });
         alertDialog.show();
     }
-
+  private void display(){
+         if(planList.size()>0 &&lastPosition>0) {
+                 if (lid.equalsIgnoreCase(planList.get(lastPosition).getLid())) {
+                     activate_cpe.setEnabled(false);
+                     activate_cpe.setBackgroundColor(getResources().getColor(R.color.view_bg));
+                 } else {
+                     activate_cpe.setEnabled(true);
+                     activate_cpe.setBackgroundColor(getResources().getColor(R.color.btn_color));
+                 }
+         }
+  }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

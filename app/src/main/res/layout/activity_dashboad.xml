@@ -7,64 +7,202 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"></include>
 
-
-
     <RelativeLayout
-        android:id="@+id/re_LL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_above="@+id/add_licence">
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
 
-    <TextView
-        android:id="@+id/text_licence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/licenseandCpemanager"
-        android:textColor="@color/color_FFC107"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
+        android:layout_below="@+id/toolbar">
 
-        <TextView
-            android:id="@+id/text_avail_licence"
+
+        <com.infinitylabs.udwan.customeviews.TextViewJosifinRegular
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Available Licence"
-            android:layout_below="@+id/text_licence"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            />
+            android:text="Welcome"
+            android:layout_marginTop="40dp"
+            android:textSize="@dimen/text_24"
+            android:textColor="@color/color_black"
+            android:layout_centerHorizontal="true"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view1"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        card_view:cardElevation="3dp"
+        android:layout_below="@+id/name"
+        card_view:cardCornerRadius="6dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/total_reg_dev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total Register Devices"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:textSize="@dimen/text_22"
+                android:textColor="@color/color_black"
+                android:gravity="center"
+                />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/total_reg_dev"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expand_less_black_24dp"
+                        android:layout_toLeftOf="@+id/active_device"
+                        android:layout_centerInParent="true"
+                        />
+                  <TextView
+                    android:id="@+id/active_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="15dp"
+                      android:layout_centerInParent="true"
+                    android:drawablePadding="0dp"
+                    android:textColor="@color/btn_color"
+                    android:textSize="@dimen/text_16"
+                    android:text="0 up"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expand_more_black_24dp"
+                        android:layout_toLeftOf="@+id/inactive_device"
+                        android:layout_centerInParent="true"
+                        />
+                <TextView
+                    android:id="@+id/inactive_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_16"
+                    android:textColor="@color/btn_color"
+                    android:text="0 down"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view2"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/text_avail_licence"
-           >
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/card_view1"
+            card_view:cardElevation="3dp"
+            card_view:cardCornerRadius="6dp"
+            card_view:cardUseCompatPadding="true">
 
-        </android.support.v7.widget.RecyclerView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/total_licence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total Licence"
+                    android:paddingTop="20dp"
+                    android:textSize="@dimen/text_22"
+                    android:textColor="@color/color_black"
+                    android:paddingBottom="20dp"
+                    android:gravity="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/total_licence"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/license_avail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/btn_color"
+                        android:textSize="@dimen/text_16"
+                        android:text="10 Available"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/license_used"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="15dp"
+                            android:text="2 Inactive"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_16" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_add" />
+
 
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/add_licence"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_FFC107"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:padding="12dp"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Add Licence"/>
-</RelativeLayout>
+
+   </RelativeLayout>
 

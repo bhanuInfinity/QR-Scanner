@@ -8,12 +8,8 @@
         android:title="Logout"
         android:icon="@drawable/ic_logout_24dp">
     </item>
-    <item
-        android:id="@+id/action_add"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_qr_code"
-        android:title="Scan">
-    </item>
+
+
 
 
 

@@ -173,7 +173,7 @@ public class LocationUpdatesService extends Service {
                 startForeground(NOTIFICATION_ID, getNotification());
             }
              */
-            startForeground(NOTIFICATION_ID, getNotification());
+          //  startForeground(NOTIFICATION_ID, getNotification());
         }
         return true; // Ensures onRebind() is called when a client re-binds.
     }
@@ -199,7 +199,7 @@ public class LocationUpdatesService extends Service {
                 .addAction(R.drawable.ic_launcher_foreground, getString(R.string.remove_location_updates),
                         servicePendingIntent)
                 .setContentText(text)
-                .setContentTitle(mLocation.getLatitude()+"")
+                .setContentTitle("SD WAN")
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setSmallIcon(R.mipmap.ic_launcher)

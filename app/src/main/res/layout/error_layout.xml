@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/internet_connection_error_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_24"
+    android:visibility="gone">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_wifi" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/oh_snap_text"
+        android:textColor="@color/color_2d2542"
+        android:textSize="@dimen/text_16" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:alpha="0.5"
+        android:gravity="center"
+        android:text="@string/internet_error_text"
+        android:textColor="@color/color_2d2542"
+        android:textSize="@dimen/text_16" />
+
+    <TextView
+        android:id="@+id/retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_24"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:background="@color/btn_color"
+        android:text="Retry"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_16" />
+
+</LinearLayout>

@@ -2,12 +2,15 @@ package com.infinitylabs.udwan;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.infinitylabs.udwan.NetworkClient.NetworkCall;
@@ -27,6 +30,8 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     EditText password;
     Button submit;
     ProgressDialog progressDialog;
+    TextView  term_and_condition;
+RelativeLayout main_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +43,28 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private void init() {
         user_name = findViewById(R.id.user_name);
         password = findViewById(R.id.password);
+        term_and_condition = findViewById(R.id.term_and_condition);
         submit = findViewById(R.id.submit);
         submit.setOnClickListener(this);
+        main_layout = findViewById(R.id.main_layout);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait..");
+        term_and_condition.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
-        if (user_name.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0) {
-            CallLogin(user_name.getText().toString(), password.getText().toString());
-        } else {
-            Toast.makeText(this, "Please enter correct login detail", Toast.LENGTH_SHORT).show();
+        if(v==term_and_condition){
+           Utils.term_And_Condition(this);
+        }
+
+        if( v == submit) {
+            if (user_name.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0) {
+                CallLogin(user_name.getText().toString(), password.getText().toString());
+            } else {
+                Toast.makeText(this, "Please enter correct login detail", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -68,7 +82,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
                     LoginResponse res = response.body();
                     if (res.getResult() != null && res.getResult().equalsIgnoreCase("Success")) {
                         Utils.INTANCE.SaveCredential(LoginScreen.this,user_name.getText().toString(),password.getText().toString(),
-                                true,res.getToken());
+                                true,res.getToken(),res.getUser().getName());
                         OpenActivity(res, true);
                     } else {
                         OpenActivity(res, false);
@@ -84,7 +98,7 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
 
                 Log.e("error", "error");
                 hideProgressDialog();
-                Toast.makeText(LoginScreen.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                snackBar();
 
             }
         });
@@ -94,7 +108,6 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
     private void OpenActivity(LoginResponse loginResponse, boolean flag) {
         if (flag) {
             Intent i = new Intent(LoginScreen.this, Dashboard.class);
-            i.putExtra(Constant.LOGINRESPONSE, loginResponse);
             startActivity(i);
             finish();
         } else {
@@ -113,5 +126,17 @@ public class LoginScreen extends AppCompatActivity implements View.OnClickListen
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    private void snackBar(){
+        Snackbar snackbar = Snackbar
+                .make(main_layout, "Oops! no internet connection!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dissmiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+        snackbar.show();
     }
 }

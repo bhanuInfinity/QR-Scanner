@@ -6,7 +6,8 @@ public class Constant {
     public static final String IS_LOGGED="isLogged";
     public static final String CUST_TOKEN="token";
    // public static final String BASE_URL ="http://203.122.19.100:8092";
-//    public static final String BASE_URL ="http://192.168.10.107:3000";
+//  public static final String BASE_URL ="http://192.168.10.107:3000";
+  // public static final String BASE_URL ="http://10.10.10.209:8008";
     public static final String BASE_URL ="https://sdwan.infinitylabs.in";
     public static final String PREF_NAME="pref_name";
     public static final String USER_PREF_NAME="userDetail";

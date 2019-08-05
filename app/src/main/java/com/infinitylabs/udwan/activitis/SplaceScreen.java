@@ -10,7 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.infinitylabs.udwan.LoginScreen;
 import com.infinitylabs.udwan.NetworkClient.NetworkCall;
@@ -23,37 +26,46 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SplaceScreen extends AppCompatActivity {
+public class SplaceScreen extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar2;
+    LinearLayout error_layout;
+    RelativeLayout maine_layout;
+    TextView retry_button;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splace);
         init();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                CheckedUser();
-            }
-        }, 3000);
+        SPlaceAnimation();
     }
 
     public void init(){
         progressBar2 = findViewById(R.id.progressBar2);
+        error_layout = findViewById(R.id.error);
+        maine_layout =findViewById(R.id.main_layout);
+        retry_button =findViewById(R.id.retry_button);
+        retry_button.setOnClickListener(this);
     }
 
     public void CheckedUser(){
-        if(Utils.INTANCE.IsLoggedIN(this)){
-            CallLogin();
-        }else{
-            progressBar2.setVisibility(View.GONE);
-            Intent i = new Intent(SplaceScreen.this, LoginScreen.class);
-            startActivity(i);
-            finish();
+          progressBar2.setVisibility(View.GONE);
+        if(Utils.checkInternetConnection(this)) {
 
+            if (Utils.INTANCE.IsLoggedIN(this)) {
+                Intent i = new Intent(SplaceScreen.this, Dashboard.class);
+                startActivity(i);
+                finish();
+            } else {
+                Intent i = new Intent(SplaceScreen.this, LoginScreen.class);
+                startActivity(i);
+                finish();
+
+            }
+        }else{
+            maine_layout.setVisibility(View.GONE);
+            error_layout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -103,7 +115,7 @@ public class SplaceScreen extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setTitle("ERROR !!");
-        builder.setMessage("Sorry there was an error getting data from server ");
+        builder.setMessage("Sorry there was an error getting data from server");
         builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -121,5 +133,23 @@ public class SplaceScreen extends AppCompatActivity {
         final AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+private void SPlaceAnimation(){
+        error_layout.setVisibility(View.GONE);
+        maine_layout.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+
+        @Override
+        public void run() {
+            CheckedUser();
+        }
+    }, 3000);
+}
+    @Override
+    public void onClick(View v) {
+        if(v == retry_button){
+            SPlaceAnimation();
+        }
     }
 }

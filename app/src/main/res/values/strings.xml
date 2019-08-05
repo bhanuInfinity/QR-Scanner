@@ -12,4 +12,17 @@
     <string name="launch_activity">MY ACTIVITY</string>
     <string name="remove_location_updates">REMOVE UPDATE</string>
     <string name="licenseandCpemanager">License &amp; CPE Manager</string>
+    <string name="internet_error_text">Looks like you are not connected to the internet.</string>
+    <string name="oh_snap_text">Oh Snap!</string>
+    <string name="terms">
+        <div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent a turpis posuere, lobortis risus in, placerat ante. Phasellus magna est, volutpat in lectus vitae, varius imperdiet lacus. Donec ac luctus dui. Curabitur sit amet metus tristique, faucibus nisl quis, lobortis metus. Etiam mattis arcu in lacus ultrices, ut gravida ipsum molestie. Sed non massa et purus commodo mattis sit amet id mauris. Nunc suscipit, justo pretium convallis lacinia, metus sem pretium eros, a pellentesque lectus nibh in ante. Sed at lorem quam. Pellentesque quis nisl nulla. Donec sed viverra neque. Vestibulum convallis finibus tortor scelerisque hendrerit.
+        </div>
+        <p>
+Nullam lectus nulla, dapibus id sodales at, rhoncus a diam. Curabitur sit amet sollicitudin dolor, ac ullamcorper tellus. Vestibulum porttitor fringilla rhoncus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla ante lacus, viverra eget eros nec, pulvinar dapibus nisl. Fusce efficitur eleifend consectetur. Etiam a elit vel arcu sodales luctus eu id eros. Donec viverra ac massa id sodales. Donec mattis nunc diam, sit amet malesuada dui tincidunt id. Pellentesque gravida imperdiet pretium. Quisque volutpat accumsan euismod. Pellentesque ut risus varius, consectetur ligula id, placerat erat. Integer porttitor in quam sed interdum. Etiam tortor dui, posuere vel sem quis, dictum mattis nibh.
+        </p>
+        <p>
+Morbi accumsan fermentum risus et porta. Integer volutpat lectus sed leo ornare, vitae imperdiet mi consectetur. Curabitur maximus diam ut tortor laoreet ultrices. Sed vel lectus id dui fringilla ultricies. Praesent at ipsum in ipsum suscipit mollis. Duis auctor velit quis purus pulvinar, quis viverra justo tincidunt. Maecenas commodo libero in justo convallis fringilla. Quisque luctus ullamcorper turpis. Duis ornare egestas orci, sed dapibus mi placerat sit amet. Ut convallis eros at tempor suscipit. Mauris eu tempus nunc, ac placerat urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc commodo diam sed eros vulputate tempor. Aenean neque sem, maximus ac venenatis quis, mattis sit amet dui.
+    </p>
+    </string>
 </resources>

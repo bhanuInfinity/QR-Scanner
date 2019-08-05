@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#5978EB</color>
 
     <color name="btn_color">#5978EB</color>
     <color name="white">#FFFFFF</color>
@@ -10,4 +10,10 @@
     <color name="color_FFC107">#e9b126</color>
     <color name="color_black">#000000</color>
     <color name="windowow_Bg">#ebe5e5</color>
+    <color name="color_2d2542">#2d2542</color>
+    <color name="view_bg">#F3EEEE</color>
+    <color name="color_ebebeb">#ebebeb</color>
+    <color name="color_00f6f6f6">#00f6f6f6</color>
+    <color name="green_color">#5FE611</color>
+    <color name="red_color">#E62A11</color>
 </resources>

@@ -1,9 +1,12 @@
 package com.infinitylabs.udwan.activitis;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +26,11 @@ import com.infinitylabs.udwan.NetworkClient.NetworkCall;
 import com.infinitylabs.udwan.R;
 import com.infinitylabs.udwan.Ui.Activity.AnyActivity;
 import com.infinitylabs.udwan.adaptor.CpePlanAdaptor;
+import com.infinitylabs.udwan.customeviews.TextViewJosifinRegular;
 import com.infinitylabs.udwan.model.CpeResponse;
 
+import com.infinitylabs.udwan.model.dashboard.DashBoardResponse;
+import com.infinitylabs.udwan.model.dashboard.LicenseResponse;
 import com.infinitylabs.udwan.model.dashboard.PlanData;
 import com.infinitylabs.udwan.utils.Utils;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -37,9 +44,6 @@ import retrofit2.Response;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
 
-    TextView subcription_price;
-    TextView subcription_price_200;
-    TextView subcription_price_250;
 
     private IntentIntegrator qrScan;
     ProgressDialog progressDialog;
@@ -47,6 +51,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     private CpePlanAdaptor  mAdapter;
     private Toolbar toolbar;
     private ArrayList<PlanData> planlist;
+    private TextView active_device;
+    private TextView inactive_device;
+    private TextView license_avail;
+    private TextView license_used;
+    public FloatingActionButton fab_add;
+    TextViewJosifinRegular name;
+    ImageView back;
 
 
     @Override
@@ -58,26 +69,41 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
 
         init();
-        CallApiforLicenses();
+        CallApiforDashboard();
     }
 
     private void init() {
-        recyclerView = findViewById(R.id.recyclerview);
-
+        active_device = findViewById(R.id.active_device);
+        inactive_device = findViewById(R.id.inactive_device);
+        license_avail = findViewById(R.id.license_avail);
+        license_used = findViewById(R.id.license_used);
+        fab_add = (FloatingActionButton)findViewById(R.id.fab_add);
+        name = findViewById(R.id.name);
+        fab_add.setOnClickListener(this);
+        license_avail.setOnClickListener(this);
+        back =findViewById(R.id.back);
+        back.setVisibility(View.GONE);
+        //recyclerView = findViewById(R.id.recyclerview);
         qrScan = new IntentIntegrator(this);
         qrScan.setCaptureActivity(AnyActivity.class);
         qrScan.setOrientationLocked(false);
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait..");
-
+        progressDialog.setCancelable(false);
+        name.setText("Hello "+Utils.getUserName(this));
 
 
     }
 
     @Override
     public void onClick(View v) {
-
+            if(v  == fab_add){
+                qrScan.initiateScan();
+            }
+            if(v == license_avail){
+                Intent intent = new Intent(this,LicenseListScreen.class);
+                startActivity(intent);
+            }
     }
 
     @Override
@@ -85,9 +111,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
-                //Toast.makeText(this, "Result :"+result.getContents().toString(), Toast.LENGTH_LONG).show();
+
                CallApi(result.getContents().toString());
             }
         } else {
@@ -104,11 +130,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             public void onResponse(Call<CpeResponse> call, Response<CpeResponse> response) {
                 if(response.code()==200) {
                     CpeResponse res = response.body();
-                    if (res.getData() != null) {
-                        Log.e("ERR02", "not exist");
-                        OpenActivity(res.getData().getLid(),key,"true",planlist);
-                    } else {
-                        OpenActivity("",key,"false",planlist);
+                    if(res.getResult().equalsIgnoreCase("failed")){
+                        showErrorDialog();
+                    }else {
+                        if (res.getData() != null) {
+                            Log.e("ERR02", "not exist");
+                            OpenActivity(res.getData().getLid(), key, "true");
+                        } else {
+                            OpenActivity("", key, "false");
+                        }
                     }
                 }else if(response.code() == 403){
                     Utils.INTANCE.Logout(getApplicationContext());
@@ -133,18 +163,55 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    private void CallApiforDashboard() {
+        showProgressDialog();
+        Call<DashBoardResponse> callapi = NetworkCall.hitNetwork(this).getDashboardCount(Utils.getHeaderMap(this));
+        callapi.enqueue(new Callback<DashBoardResponse>() {
+            @Override
+            public void onResponse(Call<DashBoardResponse> call, Response<DashBoardResponse> response) {
+                if(response.code()==200) {
+                    DashBoardResponse res = response.body();
+                     setValueOnViews(res);
+                }else if(response.code() == 403 || response.code() == 401){
+                    Utils.INTANCE.Logout(getApplicationContext());
+                    Intent newIntent = new Intent(Dashboard.this, LoginScreen.class);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(newIntent);
+                    finish();
+                }else{
+                    Toast.makeText(Dashboard.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                }
+
+                hideProgressDialog();
+
+            }
+
+            @Override
+            public void onFailure(Call<DashBoardResponse> call, Throwable t) {
+                hideProgressDialog();
+                Log.e("error", "error");
+            }
+        });
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_dashboard_menu, menu);
         return true;
     }
 
+    private void setValueOnViews(DashBoardResponse valueOnViews){
+        active_device.setText(""+valueOnViews.getData().getTotal_active_devices()+" up");
+        inactive_device.setText(""+valueOnViews.getData().getTotal_inactive_devices()+" down");
+        license_avail.setText(""+valueOnViews.getData().getTotal_active_licenses()+" Available");
+        license_used.setText(""+valueOnViews.getData().getTotal_inactive_licenses()+ " Inactive");
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add:
-                qrScan.initiateScan();
-                return true;
+
             case R.id.action_logout:
                 Utils.INTANCE.Logout(this);
                 Intent newIntent = new Intent(Dashboard.this, LoginScreen.class);
@@ -157,42 +224,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    private void CallApiforLicenses() {
-
-        showProgressDialog();
-        Call<com.infinitylabs.udwan.model.dashboard.Response> callapi = NetworkCall.hitNetwork(this).getAllLicenses(Utils.getHeaderMap(this));
-        callapi.enqueue(new Callback<com.infinitylabs.udwan.model.dashboard.Response>() {
-            @Override
-            public void onResponse(Call<com.infinitylabs.udwan.model.dashboard.Response> call, Response<com.infinitylabs.udwan.model.dashboard.Response> response) {
-                if (response.code() == 200) {
-                    com.infinitylabs.udwan.model.dashboard.Response res = response.body();
-
-                    if (res.getData() != null && res.getData().size() > 0) {
-                        Log.e("ERR02", "not exist");
-                        setAdaptor(res);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "No License attached ", Toast.LENGTH_SHORT).show();
-                    }
-                } else if (response.code() == 403) {
-                    Utils.INTANCE.Logout(getApplicationContext());
-                    Intent newIntent = new Intent(Dashboard.this, LoginScreen.class);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(newIntent);
-                }
-
-                hideProgressDialog();
-
-            }
-
-            @Override
-            public void onFailure(Call<com.infinitylabs.udwan.model.dashboard.Response> call, Throwable t) {
-                hideProgressDialog();
-                Log.e("error", "error");
-            }
-        });
-
-    }
     private void showProgressDialog() {
         if (progressDialog != null) {
             progressDialog.show();
@@ -205,27 +236,31 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    public void OpenActivity(String lid, String key, String isExist, ArrayList<PlanData> planlist){
+    public void OpenActivity(String lid, String key, String isExist){
         Intent i = new Intent(Dashboard.this, ActivationScreen.class);
         Bundle bundle =new Bundle();
         bundle.putString("ur_value",String.valueOf(key));
         bundle.putString("isExist", isExist);
         bundle.putString("lid", lid);
-        bundle.putSerializable("planlist", planlist);
+
         i.putExtras(bundle);
         startActivity(i);
     }
 
-    private  void setAdaptor(com.infinitylabs.udwan.model.dashboard.Response response){
-        mAdapter = new CpePlanAdaptor(this);
-        planlist = response.getData();
-        mAdapter.setValue(planlist);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-    }
+private void showErrorDialog(){
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder.setMessage("Unknow Device");
+    alertDialogBuilder.setPositiveButton("OK",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                   arg0.dismiss();
+                }
+            });
 
+
+    AlertDialog alertDialog = alertDialogBuilder.create();
+    alertDialog.show();
+}
 
 }

@@ -4,6 +4,8 @@ import com.infinitylabs.udwan.model.CpeActivationRequest;
 import com.infinitylabs.udwan.model.CpeResponse;
 import com.infinitylabs.udwan.model.Login.LoginRequest;
 import com.infinitylabs.udwan.model.Login.LoginResponse;
+import com.infinitylabs.udwan.model.dashboard.DashBoardResponse;
+import com.infinitylabs.udwan.model.dashboard.LicenseResponse;
 
 import java.util.Map;
 
@@ -19,7 +21,7 @@ public interface GetApi {
     @GET("/api/devices/{id}")
     Call<CpeResponse> getCpeData(@HeaderMap Map<String,String> headers,@Path("id") String id);
 
-    @POST("/api//devices")
+    @POST("/api/devices")
     Call<CpeResponse> PostActivation(@HeaderMap Map<String,String> headers, @Body CpeActivationRequest cpeActivationRequest);
 
 
@@ -27,8 +29,11 @@ public interface GetApi {
     Call<LoginResponse> Login(@Body LoginRequest loginRequest);
 
     @GET("/api/licenses")
-    Call<com.infinitylabs.udwan.model.dashboard.Response> getAllLicenses(@HeaderMap Map<String,String> header);
+    Call<LicenseResponse> getAllLicenses(@HeaderMap Map<String,String> header);
 
-    @PUT("/api//devices")
+    @PUT("/api/devices")
     Call<CpeResponse> UpdateActivation(@HeaderMap Map<String,String> headers, @Body CpeActivationRequest cpeActivationRequest);
+
+    @GET("/api/devicesStats")
+    Call<DashBoardResponse> getDashboardCount(@HeaderMap Map<String,String> headers);
 }
